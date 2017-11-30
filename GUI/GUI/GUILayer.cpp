@@ -131,9 +131,9 @@ void GUILayer::Draw()
 }
 
 std::shared_ptr<ScrollBar> GUILayer::CreateScrollBar(float x, float y, float width, float height,
-	GUIStyle *gstyle, Orientation orientation, float sizeScrollPanel_) {
-	std::shared_ptr<ScrollBar> scrollbar(new ScrollBar(window, orientation, gstyle, sizeScrollPanel_));
-	scrollbar->parent = this;
+	GUIStyle *gstyle, Orientation orientation, float sizeScrollPanel_, class ScrollingPanel &parent_) {
+	std::shared_ptr<ScrollBar> scrollbar(new ScrollBar(window, orientation, gstyle, sizeScrollPanel_, parent_));
+	//scrollbar->parent = this;
 	elements.push_back(scrollbar);
 	return scrollbar;
 }
@@ -163,13 +163,13 @@ std::shared_ptr<GUIStatusBar> GUILayer::CreateStatusBar(float height_, float fra
 }
 
 std::shared_ptr<MenuBar> GUILayer::CreateMenuBar(float x, float y, float width, float height, std::string text, TextStyle *tstyle,
-    GUIStyle *gstyle,
-    float leftBorder, float rightBorder, Color staticBarColor)
+	GUIStyle *gstyle,
+	float leftBorder, float rightBorder, Color staticBarColor)
 {
-    std::shared_ptr<MenuBar> menuBar(new MenuBar(window, x, y, width, height, text, tstyle, gstyle, leftBorder, rightBorder, staticBarColor, this));
-    menuBar->parent = this;
-    elements.push_back(menuBar);
-    return menuBar;
+	std::shared_ptr<MenuBar> menuBar(new MenuBar(window, x, y, width, height, text, tstyle, gstyle, leftBorder, rightBorder, staticBarColor, this));
+	menuBar->parent = this;
+	elements.push_back(menuBar);
+	return menuBar;
 }
 
 std::shared_ptr<TextField> GUILayer::CreateTextField(float x, float y, float width, float height, std::string text_, TextStyle *tstyle, GUIStyle *gstyle)

@@ -1,20 +1,22 @@
-#include "ScrollBar.h"
-
+#include "../../GUI/ScrollingPanel.h"
 
 ScrollBar::ScrollBar(RenderWindow* renderWindow_, Orientation orientation_,
-	GUIStyle *gstyle, float sizeScrollPanel_)
+	GUIStyle *gstyle, float sizeScrollPanel_, ScrollingPanel &parent_)
 	: GUIBox(renderWindow_, renderWindow_->getSize().x - width, 0.0f, width, height, gstyle),
 	orientation(orientation_), isMousePressed(false), sizeScrollPanel(sizeScrollPanel_)
 {
+	parentscr = &parent_;
 	Recalc();
 	roller.setFillColor(sf::Color::Color(171, 171, 171, 255));
 	band.setFillColor(sf::Color::Color(220, 220, 220, 255));
 	limiter.setFillColor(sf::Color::Color(120, 120, 120, 255));
 }
 
-void null(const float& x, const float& y)
+void null(const float& x, const float& y, ScrollingPanel &parent_)
 {
-
+	parent_.viewPosition.x += int(x);
+	parent_.viewPosition.y += int(y);
+	std::cout << "Change Position" << x << "  " << y <<  std::endl;
 }
 
 void ScrollBar::handleEvent(const sf::Event& event) {
@@ -36,22 +38,22 @@ void ScrollBar::handleEvent(const sf::Event& event) {
 
 						if (roller.getPosition().y - shift < band.getPosition().y) {
 							roller.move(0.0f, band.getPosition().y - roller.getPosition().y);
-							null(0.0, band.getPosition().y - roller.getPosition().y);
+							null(0.0, band.getPosition().y - roller.getPosition().y, *parentscr);
 						}
 						else {
 							roller.move(0.0f, -shift);
-							null(0.0f, -shift);
+							null(0.0f, -shift, *parentscr);
 						}
 					}
 					else {
 						if (event.mouseButton.y > roller.getPosition().y + roller.getSize().y) {
 							if (roller.getPosition().y + roller.getSize().y + shift > band.getPosition().y + band.getSize().y) {
 								roller.move(0.0f, band.getPosition().y + band.getSize().y - roller.getPosition().y - roller.getSize().y);
-								null(0.0f, band.getPosition().y + band.getSize().y - roller.getPosition().y - roller.getSize().y);
+								null(0.0f, band.getPosition().y + band.getSize().y - roller.getPosition().y - roller.getSize().y, *parentscr);
 							}
 							else {
 								roller.move(0.0f, shift);
-								null(0.0f, shift);
+								null(0.0f, shift, *parentscr);
 							}
 						}
 						else {
@@ -78,13 +80,13 @@ void ScrollBar::handleEvent(const sf::Event& event) {
 				if (roller.getPosition().y + event.mouseMove.y - lastPos < band.getPosition().y) {
 					roller.move(0.0f, band.getPosition().y - roller.getPosition().y);
 					lastPos = event.mouseMove.y;
-					null(0.0f, band.getPosition().y - lastPos);
+					null(0.0f, band.getPosition().y - lastPos, *parentscr);
 				}
 				else {
 					if (roller.getPosition().y + event.mouseMove.y - lastPos > band.getPosition().y + band.getSize().y - roller.getSize().y) {
 						roller.move(0.0f, band.getPosition().y + band.getSize().y - roller.getPosition().y - roller.getSize().y);
 						lastPos = roller.getPosition().y;
-						null(0.0f, band.getPosition().y + band.getSize().y - roller.getPosition().y - roller.getSize().y);
+						null(0.0f, band.getPosition().y + band.getSize().y - roller.getPosition().y - roller.getSize().y, *parentscr);
 					}
 					else {
 						roller.move(0.0f, event.mouseMove.y - lastPos);
@@ -115,22 +117,22 @@ void ScrollBar::handleEvent(const sf::Event& event) {
 
 						if (roller.getPosition().x - shift < band.getPosition().x) {
 							roller.move(band.getPosition().x - roller.getPosition().x, 0.0f);
-							null(band.getPosition().x - roller.getPosition().x, 0.0f);
+							null(band.getPosition().x - roller.getPosition().x, 0.0f, *parentscr);
 						}
 						else {
 							roller.move(-shift, 0.0f);
-							null(-shift, 0.0f);
+							null(-shift, 0.0f, *parentscr);
 						}
 					}
 					else {
 						if (event.mouseButton.x > roller.getPosition().x + roller.getSize().x) {
 							if (roller.getPosition().x + roller.getSize().x + shift > band.getPosition().x + band.getSize().x) {
 								roller.move(band.getPosition().x + band.getSize().x - roller.getPosition().x - roller.getSize().x, 0.0f);
-								null(band.getPosition().x + band.getSize().x - roller.getPosition().x - roller.getSize().x, 0.0f);
+								null(band.getPosition().x + band.getSize().x - roller.getPosition().x - roller.getSize().x, 0.0f, *parentscr);
 							}
 							else {
 								roller.move(shift, 0.0f);
-								null(shift, 0.0f);
+								null(shift, 0.0f, *parentscr);
 							}
 						}
 						else {
@@ -157,13 +159,13 @@ void ScrollBar::handleEvent(const sf::Event& event) {
 				if (roller.getPosition().x + event.mouseMove.x - lastPos < band.getPosition().x) {
 					roller.move(band.getPosition().x - roller.getPosition().x, 0.0f);
 					lastPos = event.mouseMove.x;
-					null(band.getPosition().x - lastPos, 0.0f);
+					null(band.getPosition().x - lastPos, 0.0f, *parentscr);
 				}
 				else {
 					if (roller.getPosition().x + event.mouseMove.x - lastPos > band.getPosition().x + band.getSize().x - roller.getSize().x) {
 						roller.move(band.getPosition().x + band.getSize().x - roller.getPosition().x - roller.getSize().x, 0.0f);
 						lastPos = roller.getPosition().x;
-						null(band.getPosition().x + band.getSize().x - roller.getPosition().x - roller.getSize().x, 0.0f);
+						null(band.getPosition().x + band.getSize().x - roller.getPosition().x - roller.getSize().x, 0.0f, *parentscr);
 					}
 					else {
 						roller.move(event.mouseMove.x - lastPos, 0.0f);

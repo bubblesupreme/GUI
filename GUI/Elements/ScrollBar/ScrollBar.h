@@ -3,7 +3,7 @@
 
 #include "../../../GUI/GUI/GUIBox.h"
 
-enum class Orientation  {
+enum class Orientation {
 	HORIZONTAL,
 	VERTICAL
 };
@@ -11,8 +11,8 @@ enum class Orientation  {
 class ScrollBar : public GUIBox
 {
 public:
-	ScrollBar(RenderWindow* renderWindow_, Orientation orientation_, 
-		GUIStyle *gstyle, float sizeScrollPanel_);
+	ScrollBar(RenderWindow* renderWindow_, Orientation orientation_,
+		GUIStyle *gstyle, float sizeScrollPanel_, class ScrollingPanel &parent_);
 	~ScrollBar() = default;
 
 	virtual void handleEvent(const sf::Event& event) override;
@@ -21,7 +21,7 @@ public:
 
 	virtual void Recalc() override;
 
-
+	class ScrollingPanel *parentscr;
 private:
 	bool isMousePressed;
 	float lastPos;

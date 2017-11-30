@@ -64,7 +64,17 @@ void main()
 	//создание окна и слоя гуи на нем 
 	WindowTab main(VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "main");
 	std::shared_ptr<GUILayer> layer = main.CreateGUILayer(Vector2f(0,0), Vector2f(SCREEN_WIDTH, SCREEN_HEIGHT));
-	//вот досюда
+
+
+	std::shared_ptr<ScrollingPanel> panel = main.CreateScrollPanel(VideoMode(800, 600),Vector2f(200, 50), Vector2f(50, 220), Color(50, 50, 50, 255), &gst);
+	std::shared_ptr<ScrollBar> scrollbarHor = layer->CreateScrollBar(0, 0, 0, 0, &gst, Orientation::HORIZONTAL, 1600,*panel);
+	std::shared_ptr<ScrollBar> scrollbarVert = layer->CreateScrollBar(0, 0, 0, 0, &gst, Orientation::VERTICAL, 1800,*panel);
+
+/*	panel->AddElement(scrollbarHor);
+	panel->AddElement(scrollbarVert);
+
+	int scrolbarHorId = scrollbarHor->GetID();
+	int scrolbarVertId = scrollbarVert->GetID();*/
 
 	//пример создания кнопки
 	//std::shared_ptr<GUIButton> button = layer->CreateButton(20, 20, 100,100, "button", &tst, &gst, &buttonAction);
@@ -74,13 +84,20 @@ void main()
 	icon.loadFromFile("Danger.png");
 	icon2.loadFromFile("Galaxy.png");
 	// просто текст
-	std::shared_ptr<GUILabel> label = layer->CreateLabel(0, 300, 100, 20, "Just text", &tst, &gst);
+	std::shared_ptr<GUILabel> label = layer->CreateLabel(0, 20, 100, 20, "Just text", &tst, &gst);
 	// иконка
-	std::shared_ptr<GUILabel> label1 = layer->CreateLabel(0, 330, 100, 40, "", &tst, &icon, &gst);
+	std::shared_ptr<GUILabel> label1 = layer->CreateLabel(0, 130, 100, 40, "", &tst, &icon, &gst);
 	// текст и иконка
-	std::shared_ptr<GUILabel> label2 = layer->CreateLabel(0, 400, 100, 40, "text to the right of the icon", &tst, &icon2, &gst);
+	std::shared_ptr<GUILabel> label2 = layer->CreateLabel(0, 200, 100, 40, "text to the right of the icon", &tst, &icon2, &gst);
 
-	//сохраняем ID label2
+	// просто текст
+	std::shared_ptr<GUILabel> labe2 = panel->CreateLabel(0, 20, 100, 20, "Just text", &tst, &gst);
+	// иконка
+	std::shared_ptr<GUILabel> label4 = panel->CreateLabel(0, 130, 100, 40, "", &tst, &icon, &gst);
+	// текст и иконка
+	std::shared_ptr<GUILabel> label22 = panel->CreateLabel(0, 200, 100, 40, "text to the right of the icon", &tst, &icon2, &gst);
+
+/*	//сохраняем ID label2
 	int label2ID = label2->GetID();
 	//добавляем label1 уже существующий label2 как дочерний
 	label1->AddElement(label2);
@@ -92,9 +109,9 @@ void main()
 	std::shared_ptr<GUIProgressBar> progressBar = layer->CreateProgressBar(layer, SCREEN_WIDTH / 3 + 50, SCREEN_HEIGHT / 3, 200, 30, "Sorting...", &tst, &gst,
 		0, 200, Color::White, Color::Green);
 
-    std::shared_ptr<ScrollBar> scrollbarHor = layer->CreateScrollBar(0, 0, 0, 0, &gst, Orientation::HORIZONTAL, 1600);
+    
 
-    std::shared_ptr<ScrollBar> scrollbarVert = layer->CreateScrollBar(0, 0, 0, 0, &gst, Orientation::VERTICAL, 1800);
+    
 
 	//создаем слайдер
 	std::shared_ptr<Slider> slider = layer->CreateSlider(225, 450, 350, 20, 35, 38, &gst, 0, 100, 20, &onSliderMove);
@@ -120,13 +137,13 @@ void main()
 	std::shared_ptr<TextField> textBox = layer->CreateTextField(250, 350, 100, 40, "textField", &tst, &gst);
 
 	std::shared_ptr<TextArea> textArea = layer->CreateTextArea(400, 300, 300, 200, &tst, &gst);
-
+*/
 	while (1)
 	{
 		// Костыль для теста на время, пока нет Observer.
 		// Потом будет передаваться ивент об изменении значения бара.
 		//*****тест ProgressBar****
-		progressBar->increase();
+	//	progressBar->increase();
 		Sleep(20);
 		//*************************
 

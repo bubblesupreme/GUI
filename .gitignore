@@ -11,3 +11,4 @@ sfml-*
 *.pro
 *.pro.user
 *.vs
+/x64/Release
