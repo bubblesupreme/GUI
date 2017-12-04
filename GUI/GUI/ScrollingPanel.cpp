@@ -82,16 +82,23 @@ void ScrollingPanel::notifysAll(const sf::Event & event) const
 	newevent = event;
 	if (event.type == Event::MouseMoved)
 	{
-		newevent.mouseMove.x = event.mouseMove.x - scrFieldPosition.x+viewPosition.x;
-		newevent.mouseMove.y = event.mouseMove.y - scrFieldPosition.y+ viewPosition.y;
+		newevent.mouseMove.x = event.mouseMove.x - scrFieldPosition.x + viewPosition.x;
+		newevent.mouseMove.y = event.mouseMove.y - scrFieldPosition.y + viewPosition.y;
 	}
 	else if ((event.type == Event::MouseButtonPressed) || (event.type == Event::MouseButtonReleased))
 	{
-		newevent.mouseButton.x = event.mouseButton.x - scrFieldPosition.x+ viewPosition.x;
-		newevent.mouseButton.y = event.mouseButton.y - scrFieldPosition.y+ viewPosition.y;
+		newevent.mouseButton.x = event.mouseButton.x - scrFieldPosition.x + viewPosition.x;
+		newevent.mouseButton.y = event.mouseButton.y - scrFieldPosition.y + viewPosition.y;
 	}
+	int i = 0;
 	for (auto& element : elements)
-		element->handleEvent(newevent);
+	{
+		if (i <= 1)
+			element->handleEvent(event);
+		else
+			element->handleEvent(newevent);
+		i++;
+	}
 }
 
 void ScrollingPanel::handlesEvent(const sf::Event & event)
